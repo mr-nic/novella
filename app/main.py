@@ -306,7 +306,9 @@ async def order_success(request: Request, book_id: int, db: Session = Depends(ge
 async def lookup_isbn(isbn: str):
     try:
         async with httpx.AsyncClient(timeout=10.0) as http:
-            r = await http.get(f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}")
+            r = await http.get(
+                f"https://www.googleapis.com/books/v1/volumes?q=isbn:{isbn}&key={os.getenv('GOOGLE_BOOKS_API_KEY', '')}"
+            )
         data = r.json()
         if not data.get("items"):
             return "<p style='color:#c0392b'>No book found for that ISBN. Try typing the title manually.</p>"
