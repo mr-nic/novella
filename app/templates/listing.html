@@ -1,0 +1,166 @@
+<!-- listing_2026-05-10_11-00-00.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }} — Novella</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --ink: #1a1a1a; --paper: #faf7f2; --warm: #f5f0e8; --gold: #c9963a; --muted: #8a8278; --border: #e0d9cf; }
+        body { font-family: Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); }
+        header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+        .logo span { color: var(--gold); }
+        nav a { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-left: 2rem; }
+        nav a.primary { background: var(--ink); color: var(--paper); padding: 0.5rem 1.2rem; }
+        main { max-width: 640px; margin: 3rem auto; padding: 0 1.5rem; }
+        .banner { padding: 1rem 1.5rem; margin-bottom: 2rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; }
+        .banner-listed { background: #f0f9f0; border: 1px solid #c3e6cb; color: #2d6a4f; }
+        .book-card { background: var(--warm); border: 1px solid var(--border); padding: 2rem; }
+        .book-card img { height: 120px; margin-bottom: 1rem; display: block; }
+        h1 { font-size: 1.6rem; font-weight: normal; margin-bottom: 0.3rem; }
+        .author { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .meta { display: flex; gap: 2rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .meta-item label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+        .meta-item span { font-size: 1.1rem; }
+        .seller-note { border-left: 3px solid var(--gold); padding-left: 1rem; font-style: italic; color: var(--muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
+        .condition-notes { font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.6; }
+        .postage-note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; color: var(--muted); background: #fff; border: 1px solid var(--border); padding: 0.8rem 1rem; margin-bottom: 1.5rem; }
+        .actions { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .btn { padding: 0.8rem 1.5rem; text-decoration: none; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .btn-primary { background: var(--ink); color: var(--paper); }
+        .btn-secondary { border: 1px solid var(--border); color: var(--muted); }
+
+        /* Posting flow */
+        .posting-section { margin-top: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+        .posting-section h3 { font-size: 1rem; font-weight: normal; margin-bottom: 0.4rem; }
+        .posting-section p { font-size: 0.875rem; color: var(--muted); font-family: 'Helvetica Neue', Arial, sans-serif; margin-bottom: 1rem; line-height: 1.6; }
+        .btn-posted-trigger { background: var(--ink); color: var(--paper); border: none; padding: 0.85rem 2rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; width: 100%; }
+        .btn-posted-trigger:hover { background: #333; }
+        .posting-form { display: none; margin-top: 1.2rem; background: #fff; border: 1px solid var(--border); padding: 1.5rem; }
+        .posting-form label { display: block; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.4rem; }
+        .posting-form input[type=text] { width: 100%; padding: 0.75rem; border: 1px solid var(--border); background: var(--paper); font-family: Georgia, serif; font-size: 1rem; color: var(--ink); margin-bottom: 1rem; }
+        .posting-form input:focus { outline: none; border-color: var(--ink); }
+        .posting-form .hint { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); margin-top: -0.7rem; margin-bottom: 1rem; }
+        .btn-confirm { background: var(--gold); color: #fff; border: none; padding: 0.85rem 2rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; width: 100%; }
+        .btn-confirm:hover { background: #b8852e; }
+        .posted-confirmed { background: #f0f9f0; border: 1px solid #c3e6cb; padding: 1.2rem 1.5rem; margin-top: 1.5rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; color: #2d6a4f; }
+        .posted-confirmed p { color: #2d6a4f; margin-bottom: 0.3rem; }
+        .posted-confirmed .tracking { font-size: 0.85rem; color: #8a8278; margin-top: 0.4rem; }
+
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Novell<span>a</span></a>
+        <nav>
+            <a href="/sell" class="primary">Sell another</a>
+        </nav>
+    </header>
+    <main>
+        {% if book.status == "available" %}
+        <div class="banner banner-listed">✓ Your listing is live. When it sells we'll email you straight away.</div>
+        {% endif %}
+
+        <div class="book-card">
+            {% if book.cover_image %}
+            <img src="/static/uploads/{{ book.cover_image }}" alt="{{ book.title }}">
+            {% endif %}
+            <h1>{{ book.title }}</h1>
+            <p class="author">{{ book.author }}</p>
+
+            <div class="meta">
+                <div class="meta-item">
+                    <label>Condition</label>
+                    <span>{{ book.condition }}</span>
+                </div>
+                <div class="meta-item">
+                    <label>Buyer pays</label>
+                    <span>£{{ "%.2f"|format(book.price) }}</span>
+                </div>
+                <div class="meta-item">
+                    <label>You receive</label>
+                    <span>£{{ "%.2f"|format(book.seller_net) }}</span>
+                </div>
+                {% if book.estimated_postage %}
+                <div class="meta-item">
+                    <label>Est. postage</label>
+                    <span>£{{ "%.2f"|format(book.estimated_postage) }}</span>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if book.seller_note %}
+            <div class="seller-note">"{{ book.seller_note }}"</div>
+            {% endif %}
+
+            {% if book.condition_notes %}
+            <p class="condition-notes">{{ book.condition_notes }}</p>
+            {% endif %}
+
+            {% if book.estimated_postage and book.status == "available" %}
+            <div class="postage-note">
+                📦 Estimated postage £{{ "%.2f"|format(book.estimated_postage) }} via Royal Mail 2nd Class — buy your own stamp and we'll reimburse you on payout.
+            </div>
+            {% endif %}
+
+            {# ── Posting flow (sold only) ── #}
+            {% if book.status == "sold" %}
+            <div class="posting-section">
+                <h3>Time to post your book.</h3>
+                <p>Buy a stamp at your local post office or on the Royal Mail website. Once it's in the post, let the buyer know below.</p>
+                <button class="btn-posted-trigger" onclick="showPostingForm()">Have you posted it?</button>
+                <div class="posting-form" id="posting-form">
+                    <form action="/mark-posted/{{ book.id }}" method="post">
+                        <label>Tracking reference <span style="font-weight:normal;text-transform:none;letter-spacing:0">(optional but helpful)</span></label>
+                        <input type="text" name="tracking_reference" placeholder="e.g. AB123456789GB">
+                        <p class="hint">Found on your receipt. Leave blank if you used a regular stamp.</p>
+                        <button type="submit" class="btn-confirm">Confirm — book is posted ✓</button>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+
+            {# ── Already posted ── #}
+            {% if book.status == "posted" %}
+            <div class="posted-confirmed">
+                <p>📦 <strong>Posted.</strong> The buyer has been notified.</p>
+                {% if book.tracking_reference %}
+                <p class="tracking">Tracking reference: {{ book.tracking_reference }}</p>
+                {% endif %}
+                {% if book.posted_at %}
+                <p class="tracking">Marked posted: {{ book.posted_at.strftime('%d %b %Y') }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a href="/" class="btn btn-secondary">Home</a>
+            <a href="/browse" class="btn btn-secondary">Browse</a>
+            <a href="/sell" class="btn btn-primary">List another book</a>
+        </div>
+
+        {% if book.status == "available" %}
+        <form action="/create-checkout/{{ book.id }}" method="post" style="margin-top:1.5rem">
+            <button type="submit" style="width:100%;background:#c9963a;color:#fff;border:none;padding:1.1rem;font-size:1.1rem;font-family:Georgia,serif;cursor:pointer;letter-spacing:0.05em;">
+                Buy this book — £{{ "%.2f"|format(book.price + (book.estimated_postage or 0)) }}
+            </button>
+            <p style="text-align:center;font-size:0.8rem;color:var(--muted);margin-top:0.5rem;font-family:'Helvetica Neue',Arial,sans-serif;">
+                Includes £{{ "%.2f"|format(book.estimated_postage or 0) }} postage · Secure payment via Stripe
+            </p>
+        </form>
+        {% endif %}
+    </main>
+    <footer>© 2026 Novella · novellaldn.co.uk</footer>
+
+    <script>
+        function showPostingForm() {
+            document.querySelector('.btn-posted-trigger').style.display = 'none';
+            document.getElementById('posting-form').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

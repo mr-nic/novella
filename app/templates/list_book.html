@@ -1,0 +1,285 @@
+<!-- list_book_2026-05-08_16-05-49.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novella — List a book</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --ink: #1a1a1a; --paper: #faf7f2; --warm: #f5f0e8; --gold: #c9963a; --muted: #8a8278; --border: #e0d9cf; }
+        body { font-family: Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); }
+        header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+        .logo span { color: var(--gold); }
+        nav a { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-left: 2rem; }
+        main { max-width: 640px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        h2 { font-size: 1.6rem; margin-bottom: 0.5rem; font-weight: normal; }
+        .subtitle { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+        .mode-toggle { display: flex; gap: 0; margin-bottom: 2rem; border: 1px solid var(--border); overflow: hidden; }
+        .mode-toggle button { flex: 1; padding: 0.7rem; border: none; background: #fff; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.04em; cursor: pointer; color: var(--muted); }
+        .mode-toggle button.active { background: var(--ink); color: var(--paper); }
+
+        .field { margin-bottom: 1.5rem; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--muted); font-family: 'Helvetica Neue', Arial, sans-serif; letter-spacing: 0.03em; text-transform: uppercase; }
+        input[type=text], input[type=number], input[type=email], textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); background: #fff; font-family: Georgia, serif; font-size: 1rem; color: var(--ink); }
+        input:focus, textarea:focus { outline: none; border-color: var(--ink); }
+        input[type=file] { width: 100%; padding: 0.75rem 0; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; color: var(--muted); }
+
+        .isbn-row { display: flex; gap: 0.5rem; }
+        .isbn-row input { flex: 1; }
+        .lookup-btn { background: var(--ink); color: var(--paper); border: none; padding: 0 1.2rem; cursor: pointer; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.04em; white-space: nowrap; }
+        .lookup-btn:hover { background: #333; }
+
+        .weight-row { display: flex; gap: 0.5rem; align-items: flex-end; }
+        .weight-row input { width: 120px; flex: none; }
+        .weight-row span { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; color: var(--muted); padding-bottom: 0.75rem; }
+        .recalc-btn { background: var(--warm); color: var(--ink); border: 1px solid var(--border); padding: 0.75rem 1rem; cursor: pointer; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; white-space: nowrap; }
+        .recalc-btn:hover { background: var(--border); }
+
+        .htmx-indicator { display: none; color: var(--muted); font-size: 0.85rem; margin-top: 0.4rem; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        .htmx-request .htmx-indicator { display: block; }
+
+        .bundle-books { border: 1px solid var(--border); padding: 1rem; margin-bottom: 1rem; background: #fff; }
+        .bundle-book { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        .bundle-book:last-child { border-bottom: none; }
+        .remove-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem; }
+        .add-book-btn { background: none; border: 1px dashed var(--border); width: 100%; padding: 0.7rem; cursor: pointer; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; color: var(--muted); margin-bottom: 1.5rem; }
+        .add-book-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+        .email-note { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+        .submit-btn { width: 100%; background: var(--ink); color: var(--paper); border: none; padding: 1rem; font-size: 1rem; font-family: Georgia, serif; cursor: pointer; letter-spacing: 0.05em; margin-top: 1rem; }
+        .submit-btn:hover { background: #333; }
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Novell<span>a</span></a>
+        <nav><a href="/browse">Browse books</a></nav>
+    </header>
+    <main>
+        <h2>List a book</h2>
+        <p class="subtitle">Takes about 2 minutes. We'll handle the rest.</p>
+
+        <div class="mode-toggle">
+            <button class="active" id="btn-single" onclick="setMode('single')">Single book</button>
+            <button id="btn-bundle" onclick="setMode('bundle')">Bundle of books</button>
+        </div>
+
+        <div class="field" id="isbn-section">
+            <label>ISBN (scan or type)</label>
+            <div class="isbn-row">
+                <input type="text" id="isbn-input" placeholder="e.g. 9780141187761" maxlength="20">
+                <button class="lookup-btn"
+                    hx-get="/lookup-isbn"
+                    hx-vals="js:{isbn: document.getElementById('isbn-input').value}"
+                    hx-target="#book-meta"
+                    hx-indicator="#lookup-indicator">
+                    Look up
+                </button>
+            </div>
+            <span class="htmx-indicator" id="lookup-indicator">Looking up...</span>
+        </div>
+        <div id="book-meta"></div>
+
+        <div id="bundle-section" style="display:none">
+            <label>Books in this bundle</label>
+            <div class="bundle-books" id="bundle-list">
+                <p style="color:var(--muted);font-size:0.9rem;font-family:'Helvetica Neue',Arial,sans-serif">No books added yet.</p>
+            </div>
+            <button class="add-book-btn" type="button" onclick="showIsbnForBundle()">+ Add another book by ISBN</button>
+        </div>
+
+        <form action="/sell" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="isbn" id="isbn-hidden">
+            <input type="hidden" name="cover_url" id="cover-url">
+            <input type="hidden" name="bundle_titles" id="bundle-titles" value="">
+            <input type="hidden" name="is_bundle" id="is-bundle" value="false">
+            <!-- Persistent postage input — synced by JS from HTMX responses -->
+            <input type="hidden" name="estimated_postage" id="estimated-postage-submit" value="0">
+
+            <div class="field" id="title-field">
+                <label>Title</label>
+                <input type="text" name="title" id="title" placeholder="Book title" required>
+            </div>
+            <div class="field" id="author-field">
+                <label>Author</label>
+                <input type="text" name="author" id="author" placeholder="Author name" required>
+            </div>
+
+            <div class="field">
+                <label>Photos of your book (cover + any wear)</label>
+                <input type="file" name="photos" id="photos" accept="image/*" multiple
+                    hx-post="/grade-condition"
+                    hx-trigger="change"
+                    hx-target="#condition-result"
+                    hx-encoding="multipart/form-data"
+                    hx-indicator="#grade-indicator">
+                <span class="htmx-indicator" id="grade-indicator">Novella is grading your book...</span>
+            </div>
+            <div id="condition-result"></div>
+
+            <div class="field" id="weight-section" style="display:none">
+                <label>Actual weight — optional, overrides our estimate</label>
+                <div class="weight-row">
+                    <input type="number" id="actual-weight" placeholder="e.g. 380" min="80" max="2000" step="10">
+                    <span>g</span>
+                    <button type="button" class="recalc-btn"
+                        hx-get="/recalculate-postage"
+                        hx-vals="js:{weight_g: document.getElementById('actual-weight').value || 200}"
+                        hx-target="#postage-override"
+                        hx-indicator="#recalc-indicator">
+                        Recalculate postage
+                    </button>
+                </div>
+                <span class="htmx-indicator" id="recalc-indicator">Recalculating...</span>
+                <div id="postage-override"></div>
+            </div>
+
+            <div class="field">
+                <label>Why did you love this book?</label>
+                <textarea name="seller_note" rows="3" placeholder="e.g. Changed how I think about cities. Passed it on twice already."></textarea>
+            </div>
+
+            <div class="field">
+                <label>What do you want to receive? (£)</label>
+                <input type="number"
+                    id="seller-net"
+                    name="seller_net"
+                    min="0.50" max="500" step="0.01"
+                    placeholder="e.g. 8.00"
+                    hx-get="/calculate-price"
+                    hx-include="#seller-net"
+                    hx-target="#price-preview"
+                    hx-trigger="input changed delay:400ms[this.value.length > 0]">
+            </div>
+            <div id="price-preview">
+                <input type="hidden" name="price" id="price-hidden" value="0">
+                <input type="hidden" name="buyer_price" id="buyer-price" value="0">
+            </div>
+
+            <div class="field">
+                <label>Your email — we'll notify you when it sells</label>
+                <input type="email" name="seller_email" placeholder="you@example.com" required>
+                <p class="email-note">Only used to notify you of a sale. Never shared.</p>
+            </div>
+
+            <button type="submit" class="submit-btn">Publish listing →</button>
+        </form>
+    </main>
+    <footer>© 2026 Novella · novellaldn.co.uk</footer>
+
+    <script>
+        let mode = 'single';
+        let bundleBooks = [];
+
+        function setMode(m) {
+            mode = m;
+            document.getElementById('btn-single').classList.toggle('active', m === 'single');
+            document.getElementById('btn-bundle').classList.toggle('active', m === 'bundle');
+            document.getElementById('bundle-section').style.display = m === 'bundle' ? 'block' : 'none';
+            document.getElementById('title-field').style.display = m === 'single' ? 'block' : 'none';
+            document.getElementById('author-field').style.display = m === 'single' ? 'block' : 'none';
+            document.getElementById('is-bundle').value = m === 'bundle' ? 'true' : 'false';
+            if (m === 'bundle') {
+                document.getElementById('title').removeAttribute('required');
+                document.getElementById('author').removeAttribute('required');
+                document.getElementById('title').value = 'Bundle listing';
+                document.getElementById('author').value = 'Various';
+            } else {
+                document.getElementById('title').setAttribute('required', '');
+                document.getElementById('author').setAttribute('required', '');
+            }
+        }
+
+        function showIsbnForBundle() {
+            document.getElementById('isbn-section').style.display = 'block';
+            document.getElementById('isbn-input').focus();
+        }
+
+        function addToBundle(title, author) {
+            if (mode !== 'bundle') return;
+            bundleBooks.push({ title, author });
+            renderBundle();
+            document.getElementById('bundle-titles').value = JSON.stringify(bundleBooks);
+        }
+
+        function removeFromBundle(idx) {
+            bundleBooks.splice(idx, 1);
+            renderBundle();
+            document.getElementById('bundle-titles').value = JSON.stringify(bundleBooks);
+        }
+
+        function renderBundle() {
+            const list = document.getElementById('bundle-list');
+            if (bundleBooks.length === 0) {
+                list.innerHTML = '<p style="color:var(--muted);font-size:0.9rem;font-family:\'Helvetica Neue\',Arial,sans-serif">No books added yet.</p>';
+                return;
+            }
+            list.innerHTML = bundleBooks.map((b, i) => `
+                <div class="bundle-book">
+                    <span><strong>${b.title}</strong> — ${b.author}</span>
+                    <button class="remove-btn" type="button" onclick="removeFromBundle(${i})">×</button>
+                </div>
+            `).join('');
+            document.getElementById('title').value = `Bundle: ${bundleBooks.map(b => b.title).join(', ')}`;
+        }
+
+        function syncPostage(container) {
+            const injected = container.querySelector('#estimated-postage');
+            if (injected) {
+                document.getElementById('estimated-postage-submit').value = injected.value;
+            }
+        }
+
+        document.body.addEventListener('htmx:afterSwap', function(e) {
+            const targetId = e.detail.target.id;
+
+            if (targetId === 'price-preview') {
+                const bp = document.getElementById('buyer-price');
+                if (bp) {
+                    document.getElementById('price-hidden').value = bp.value;
+                }
+            }
+
+            if (targetId === 'book-meta') {
+                document.getElementById('weight-section').style.display = 'block';
+                syncPostage(e.detail.target);
+                const t = document.getElementById('title').value;
+                const a = document.getElementById('author').value;
+                if (mode === 'bundle' && t && t !== 'Bundle listing') {
+                    addToBundle(t, a);
+                }
+            }
+
+            if (targetId === 'postage-override') {
+                syncPostage(e.detail.target);
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function() {
+            document.getElementById('isbn-hidden').value = document.getElementById('isbn-input').value;
+        });
+
+        document.getElementById('photos').addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const existing = document.getElementById('photo-preview');
+                if (existing) existing.remove();
+                const preview = document.createElement('div');
+                preview.id = 'photo-preview';
+                preview.style.cssText = 'margin-top:0.8rem;';
+                preview.innerHTML = '<img src="' + e.target.result + '" style="max-height:150px;border:1px solid var(--border);display:block;">';
+                document.getElementById('photos').parentNode.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

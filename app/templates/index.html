@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novella — Books with a story</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --ink: #1a1a1a;
+            --paper: #faf7f2;
+            --warm: #f5f0e8;
+            --gold: #c9963a;
+            --muted: #8a8278;
+            --border: #e0d9cf;
+        }
+        body { font-family: Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); line-height: 1.6; }
+
+        header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+        .logo span { color: var(--gold); }
+        nav a { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-left: 2rem; }
+        nav a:hover { color: var(--ink); }
+        nav a.primary { background: var(--ink); color: var(--paper); padding: 0.5rem 1.2rem; }
+        nav a.primary:hover { background: #333; }
+
+        .hero { max-width: 760px; margin: 5rem auto 4rem; padding: 0 2rem; text-align: center; }
+        .hero h1 { font-size: clamp(2rem, 4.5vw, 2.8rem); line-height: 1.2; margin-bottom: 1.5rem; font-weight: normal; white-space: nowrap; }
+        .hero h1 em { font-style: italic; color: var(--gold); }
+        .hero-sub { font-size: 1.1rem; color: var(--muted); margin: 0 auto 2.5rem; line-height: 1.9; }
+        .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary { background: var(--ink); color: var(--paper); padding: 0.85rem 2rem; text-decoration: none; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .btn-primary:hover { background: #333; }
+        .btn-secondary { border: 1px solid var(--border); color: var(--muted); padding: 0.85rem 2rem; text-decoration: none; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; }
+        .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+
+        hr.divider { border: none; border-top: 1px solid var(--border); max-width: 80px; margin: 0 auto 4rem; }
+
+        .how { max-width: 860px; margin: 0 auto 5rem; padding: 0 2rem; }
+        .how h2 { text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); font-weight: normal; margin-bottom: 3rem; }
+        .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem 3rem; }
+        .step { padding: 0; text-align: center; }
+        .step-num { font-size: 1.8rem; color: var(--gold); margin-bottom: 0.5rem; font-style: italic; }
+        .step h3 { font-size: 1rem; margin-bottom: 0.4rem; font-weight: normal; }
+        .step p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+        .why { background: var(--warm); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 4rem 2rem; margin-bottom: 5rem; }
+        .why-inner { max-width: 900px; margin: 0 auto; }
+        .why h2 { text-align: center; font-size: 1.5rem; font-weight: normal; margin-bottom: 2.5rem; }
+        .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .pillar h3 { font-size: 1rem; margin-bottom: 0.4rem; }
+        .pillar p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); letter-spacing: 0.04em; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Novell<span>a</span></a>
+        <nav>
+            <a href="/browse">Browse</a>
+            <a href="/sell" class="primary">Sell a book</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 id="headline">Every good book deserves <em>another reader.</em></h1>
+        <p class="hero-sub">
+            Novella connects readers who've loved a book with readers who'll love it next.<br>
+            No warehouses. No middlemen.<br>
+            Only readers and booklovers.
+        </p>
+        <div class="hero-actions">
+            <a href="/sell" class="btn-primary">List a book</a>
+            <a href="/browse" class="btn-secondary">Browse books</a>
+        </div>
+    </section>
+
+    <hr class="divider">
+
+    <section class="how">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Scan your book</h3>
+                <p>Enter the ISBN and we pull the title, author and cover automatically.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Photo it</h3>
+                <p>Take a couple of photos. Our AI grades the condition honestly so buyers trust what they're getting.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Tell its story</h3>
+                <p>One line about why you loved it. That's what makes Novella different.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h3>Post it</h3>
+                <p>When it sells, print the Royal Mail label and drop it at your nearest post box.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="why">
+        <div class="why-inner">
+            <h2>No Jeff. No charity shop skips. No books needlessly pulped.</h2>
+            <div class="pillars">
+                <div class="pillar">
+                    <h3>Fair for sellers</h3>
+                    <p>We take 10% — half what the competition charges. Your books, your money.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Honest for buyers</h3>
+                    <p>AI-graded condition means no nasty surprises. Photos of the actual book, not stock images.</p>
+                </div>
+                <div class="pillar">
+                    <h3>Good for the planet</h3>
+                    <p>Every book rehomed is a book not pulped. Peer-to-peer means no warehouse, no fleet, no waste.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Novella · novellaldn.co.uk · Built in SE London</p>
+    </footer>
+
+    <script>
+        const headlines = [
+            'Every good book deserves <em>another reader.</em>',
+            'The best books <em>keep moving.</em>',
+            'Read it. Loved it. <em>Pass it on.</em>',
+            'Books were meant <em>to be shared.</em>',
+            'Your next favourite book <em>is on someone\'s shelf.</em>'
+        ];
+        let current = 0;
+        const el = document.getElementById('headline');
+        setInterval(() => {
+            el.style.opacity = '0';
+            el.style.transition = 'opacity 0.5s';
+            setTimeout(() => {
+                current = (current + 1) % headlines.length;
+                el.innerHTML = headlines[current];
+                el.style.opacity = '1';
+            }, 500);
+        }, 4000);
+    </script>
+</body>
+</html>

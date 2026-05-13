@@ -1,0 +1,172 @@
+# admin_2026-05-10_11-00-00.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — Novella</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --ink: #1a1a1a; --paper: #faf7f2; --warm: #f5f0e8; --gold: #c9963a; --muted: #8a8278; --border: #e0d9cf; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background: #f0ede8; color: var(--ink); font-size: 0.9rem; }
+
+        header { background: var(--ink); color: var(--paper); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: Georgia, serif; font-size: 1.3rem; letter-spacing: 0.08em; }
+        .logo span { color: var(--gold); }
+        header nav { display: flex; gap: 1.5rem; align-items: center; }
+        header nav a { color: #aaa; text-decoration: none; font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        header nav a:hover { color: #fff; }
+        .logout-btn { background: none; border: 1px solid #555; color: #aaa; padding: 0.35rem 0.8rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .logout-btn:hover { border-color: #aaa; color: #fff; }
+
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; padding: 1.5rem 2rem; }
+        .stat { background: #fff; border: 1px solid var(--border); padding: 1rem 1.2rem; }
+        .stat-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 0.3rem; }
+        .stat-value { font-size: 1.5rem; font-family: Georgia, serif; }
+        .stat-value.green { color: #27ae60; }
+        .stat-value.gold { color: var(--gold); }
+
+        .table-wrap { padding: 0 2rem 3rem; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); }
+        thead { background: var(--warm); }
+        th { padding: 0.7rem 1rem; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: normal; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #faf7f2; }
+
+        .status-badge { display: inline-block; padding: 0.2rem 0.6rem; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; }
+        .status-available { background: #e8f5e9; color: #2d6a4f; }
+        .status-sold { background: #fff3e0; color: #e67e22; }
+        .status-posted { background: #e3f2fd; color: #1565c0; }
+
+        .title-cell { max-width: 180px; }
+        .title-cell strong { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .title-cell span { color: var(--muted); font-size: 0.8rem; }
+
+        .actions { display: flex; gap: 0.4rem; white-space: nowrap; }
+        .btn-action { border: none; padding: 0.3rem 0.7rem; cursor: pointer; font-size: 0.75rem; letter-spacing: 0.03em; text-transform: uppercase; }
+        .btn-sold { background: #f5f5f5; color: #666; }
+        .btn-sold:hover { background: #e0e0e0; }
+        .btn-available { background: #e8f5e9; color: #2d6a4f; }
+        .btn-available:hover { background: #c8e6c9; }
+        .btn-delete { background: #fdf0f0; color: #c0392b; }
+        .btn-delete:hover { background: #fad7d7; }
+        .btn-view { background: var(--warm); color: var(--ink); text-decoration: none; padding: 0.3rem 0.7rem; font-size: 0.75rem; letter-spacing: 0.03em; text-transform: uppercase; }
+        .btn-view:hover { background: var(--border); }
+
+        .muted-cell { color: var(--muted); font-size: 0.82rem; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .date-cell { color: var(--muted); font-size: 0.82rem; white-space: nowrap; }
+        .price-cell { font-family: Georgia, serif; white-space: nowrap; }
+        .net-cell { color: #27ae60; font-family: Georgia, serif; white-space: nowrap; }
+        .tracking-cell { font-size: 0.82rem; color: #1565c0; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    </style>
+</head>
+<body>
+    <header>
+        <span class="logo">Novell<span>a</span> · Admin</span>
+        <nav>
+            <a href="/browse">Browse</a>
+            <a href="/sell">Sell</a>
+            <form action="/admin/logout" method="post" style="margin:0">
+                <button class="logout-btn">Sign out</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-label">Total listings</div>
+            <div class="stat-value">{{ stats.total }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Available</div>
+            <div class="stat-value green">{{ stats.available }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Sold</div>
+            <div class="stat-value" style="color:#e67e22">{{ stats.sold }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Posted</div>
+            <div class="stat-value" style="color:#1565c0">{{ stats.posted }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Gross revenue</div>
+            <div class="stat-value gold">£{{ "%.2f"|format(stats.revenue) }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Seller payouts</div>
+            <div class="stat-value">£{{ "%.2f"|format(stats.seller_net) }}</div>
+        </div>
+        <div class="stat">
+            <div class="stat-label">Novella net</div>
+            <div class="stat-value green">£{{ "%.2f"|format(stats.novella_net) }}</div>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Book</th>
+                    <th>Condition</th>
+                    <th>Buyer pays</th>
+                    <th>Seller net</th>
+                    <th>Status</th>
+                    <th>Seller email</th>
+                    <th>Listed</th>
+                    <th>Tracking</th>
+                    <th>Posted</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr>
+                    <td style="color:var(--muted)">{{ book.id }}</td>
+                    <td class="title-cell">
+                        <strong title="{{ book.title }}">{{ book.title }}</strong>
+                        <span>{{ book.author }}</span>
+                    </td>
+                    <td>{{ book.condition or '—' }}</td>
+                    <td class="price-cell">£{{ "%.2f"|format(book.price) }}</td>
+                    <td class="net-cell">£{{ "%.2f"|format(book.seller_net) }}</td>
+                    <td>
+                        <span class="status-badge status-{{ book.status }}">{{ book.status }}</span>
+                    </td>
+                    <td class="muted-cell" title="{{ book.seller_email }}">{{ book.seller_email or '—' }}</td>
+                    <td class="date-cell">
+                        {% if book.created_at %}{{ book.created_at.strftime('%d %b %Y') }}{% else %}—{% endif %}
+                    </td>
+                    <td class="tracking-cell" title="{{ book.tracking_reference }}">
+                        {{ book.tracking_reference or '—' }}
+                    </td>
+                    <td class="date-cell">
+                        {% if book.posted_at %}{{ book.posted_at.strftime('%d %b %Y') }}{% else %}—{% endif %}
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a href="/listing/{{ book.id }}" class="btn-view" target="_blank">View</a>
+                            {% if book.status == "available" %}
+                            <form action="/admin/mark-sold/{{ book.id }}" method="post" style="margin:0">
+                                <button class="btn-action btn-sold">Mark sold</button>
+                            </form>
+                            {% else %}
+                            <form action="/admin/mark-available/{{ book.id }}" method="post" style="margin:0">
+                                <button class="btn-action btn-available">Relist</button>
+                            </form>
+                            {% endif %}
+                            <form action="/admin/delete/{{ book.id }}" method="post" style="margin:0"
+                                onsubmit="return confirm('Delete {{ book.title|replace("'","") }}?')">
+                                <button class="btn-action btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

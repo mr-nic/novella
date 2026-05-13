@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order confirmed — Novella</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --ink: #1a1a1a; --paper: #faf7f2; --warm: #f5f0e8; --gold: #c9963a; --muted: #8a8278; --border: #e0d9cf; }
+        body { font-family: Georgia, 'Times New Roman', serif; background: var(--paper); color: var(--ink); }
+        header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.6rem; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+        .logo span { color: var(--gold); }
+        nav a { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; margin-left: 2rem; }
+        main { max-width: 600px; margin: 4rem auto; padding: 0 1.5rem; text-align: center; }
+        .tick { font-size: 3rem; margin-bottom: 1.5rem; }
+        h1 { font-size: 1.8rem; font-weight: normal; margin-bottom: 1rem; }
+        p { color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+        .book-summary { background: var(--warm); border: 1px solid var(--border); padding: 1.5rem; margin: 2rem 0; text-align: left; }
+        .book-summary h2 { font-size: 1.1rem; font-weight: normal; margin-bottom: 0.3rem; }
+        .book-summary p { font-size: 0.9rem; margin-bottom: 0; }
+        .spam-notice { background: #fff; border: 1px solid var(--border); padding: 1rem 1.2rem; margin: 0 0 1.5rem; text-align: left; }
+        .spam-notice p { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.85rem; color: var(--muted); margin: 0; line-height: 1.6; }
+        .spam-notice strong { color: var(--ink); }
+        .btn { display: inline-block; background: var(--ink); color: var(--paper); padding: 0.85rem 2rem; text-decoration: none; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.9rem; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 1rem; }
+        footer { border-top: 1px solid var(--border); padding: 2rem; text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; color: var(--muted); margin-top: 4rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">Novell<span>a</span></a>
+        <nav><a href="/browse">Browse more books</a></nav>
+    </header>
+    <main>
+        <div class="tick">✓</div>
+        <h1>Order confirmed.</h1>
+        <p>Thank you for your purchase. The seller has been notified and will post your book shortly.</p>
+
+        <div class="book-summary">
+            <h2>{{ book.title }}</h2>
+            <p>{{ book.author }} · Condition: {{ book.condition }}</p>
+        </div>
+
+        <div class="spam-notice">
+            <p>📬 <strong>Check your spam folder</strong> — your confirmation email may have landed there.
+            Add <strong>hello@novellaldn.co.uk</strong> to your contacts to make sure you hear from us.</p>
+        </div>
+
+        <a href="/browse" class="btn">Browse more books</a>
+    </main>
+    <footer>© 2026 Novella · novellaldn.co.uk</footer>
+</body>
+</html>
